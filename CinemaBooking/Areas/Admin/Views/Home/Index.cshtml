@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "Bảng Điều Khiển Quản Trị";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
+
+<div class="mt-4">
+    <h3 class="mb-4">Thống Kê</h3>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <i class="bx bx-building-house bx-lg"></i>
+                    <h5 class="card-title">Tổng Số Rạp Chiếu</h5>
+                    <p class="card-text display-4">@ViewBag.TotalCinemas</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <i class="bx bx-film bx-lg"></i>
+                    <h5 class="card-title">Tổng Số Phim</h5>
+                    <p class="card-text display-4">@ViewBag.TotalMovies</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <i class="bx bx-calendar bx-lg"></i>
+                    <h5 class="card-title">Tổng Số Lịch Chiếu</h5>
+                    <p class="card-text display-4">@ViewBag.TotalShowtimes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <i class="bx bx-user bx-lg"></i>
+                    <h5 class="card-title">Tổng Số Người Dùng</h5>
+                    <p class="card-text display-4">@ViewBag.TotalUsers</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-danger">
+                <div class="card-body">
+                    <i class="bx bx-ticket bx-lg"></i>
+                    <h5 class="card-title">Tổng Số Vé Đã Bán</h5>
+                    <p class="card-text display-4">@ViewBag.TotalTickets</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-dark">
+                <div class="card-body">
+                    <i class="bx bx-dollar bx-lg"></i>
+                    <h5 class="card-title">Tổng Doanh Thu</h5>
+                    <p class="card-text display-4">@ViewBag.TotalRevenue.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="mt-5 mb-3">Top 5 Phim Bán Chạy Nhất</h3>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Tiêu Đề Phim</th>
+                    <th>Số Vé Đã Bán</th>
+                    <th>Tổng Doanh Thu</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var movie in ViewBag.TopMovies)
+                {
+                    <tr>
+                        <td>@movie.MovieTitle</td>
+                        <td>@movie.TicketsSold</td>
+                        <td>@movie.TotalRevenue:C</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

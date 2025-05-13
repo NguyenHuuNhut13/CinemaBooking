@@ -1,0 +1,45 @@
+﻿@model CinemaBooking.Areas.Admin.ViewModels.AuditoriumViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh Sửa Rạp Chiếu Phim"; // Page Title
+}
+
+        <!-- Increased column size for better layout -->
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Chọn Rạp Chiếu Phim -->
+            <div class="form-group">
+                <label asp-for="CinemaId" class="control-label"></label>
+                <select asp-for="CinemaId" class="form-control" asp-items="ViewBag.CinemaId">
+                </select>
+                <span asp-validation-for="CinemaId" class="text-danger"></span>
+            </div>
+
+            <!-- Tên Rạp -->
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Nhập tên rạp" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- Sức Chứa Ghế -->
+            <div class="form-group">
+                <label asp-for="SeatCapacity" class="control-label"></label>
+                <input asp-for="SeatCapacity" class="form-control" type="number" placeholder="Nhập sức chứa ghế" min="1" />
+                <span asp-validation-for="SeatCapacity" class="text-danger"></span>
+            </div>
+
+            <!-- Nút Lưu -->
+            <div class="form-group mt-3">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a> <!-- Back to List Button -->
+            </div>
+        </form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial"); // Include validation scripts
+    }
+}

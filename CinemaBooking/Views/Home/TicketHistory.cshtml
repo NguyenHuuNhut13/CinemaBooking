@@ -1,0 +1,89 @@
+﻿@model List<Ticket>
+
+<h2>Lịch Sử Vé</h2>
+
+@if (Model.Count > 0)
+{
+ 
+
+    <table class="table" id="ticketTable">
+        <thead>
+            <tr>
+                <th>Phim</th>
+                <th>Giờ Chiếu</th>
+                <th>Ghế</th>
+                <th>Thời Gian Đặt Vé</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in Model)
+            {
+                <tr>
+                    <td>@ticket.Showtime.Movie.Title</td>
+                    <td>@ticket.Showtime.ShowTime1</td>
+                    <td>@ticket.SeatId</td>
+                    <td>@ticket.BookingTime</td>
+
+                    <td>                    <button class="btn btn-primary" id="btnGeneratePDF_@ticket.TicketId" data-ticket-id="@ticket.TicketId">In vé</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Bạn chưa đặt vé nào.</p>
+}
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Lắng nghe sự kiện click trên các nút tạo PDF
+            $('[id^="btnGeneratePDF_"]').click(function () {
+                const ticketId = $(this).data('ticket-id');
+
+                // Tạo URL sử dụng Razor's Url.Action để tạo điểm đến chính xác
+                const url = '@Url.Action("GetTicket", "Home")?ticketId=' + ticketId;
+
+                // Thực hiện yêu cầu AJAX để lấy dữ liệu vé
+                $.ajax({
+                    url: url, // URL để lấy dữ liệu vé
+                    type: 'GET', // Phương thức HTTP
+                    success: function (ticket) {
+                        // Tạo HTML nội dung vé
+                        let ticketContent = `
+                                            <div id="ticketContent" style="font-family: Arial, sans-serif; padding: 20px;">
+                                                <h2 style="text-align: center;">Vé Cinema</h2>
+                                                <p><strong>Mã vé:</strong> ${ticket.ticketId}</p>
+                                                <p><strong>Phim:</strong> ${ticket.showtime.movie.title}</p>
+                                                <p><strong>Giờ Chiếu:</strong> ${ticket.showtime.showTime1}</p>
+                                                <p><strong>Ghế:</strong> ${ticket.seatId}</p>
+                                                <p><strong>Thời Gian Đặt Vé:</strong> ${new Date(ticket.bookingTime).toLocaleString()}</p>
+                                                <p><strong>Người dùng:</strong> ${ticket.user.fullName}</p>
+                                                <p><strong>Email:</strong> ${ticket.user.email}</p>
+                                            </div>
+                                        `;
+
+                        // Chèn nội dung vào một phần tử HTML ẩn
+                        $('body').append(ticketContent);
+
+                        // Sử dụng html2pdf.js để chuyển đổi nội dung HTML thành PDF
+                        const element = document.getElementById('ticketContent');
+                        html2pdf()
+                            .from(element)
+                            .save("Ve_Cinema_" + ticket.ticketId + ".pdf")
+                            .finally(() => {
+                                // Sau khi lưu PDF, xóa phần tử HTML tạm thời
+                                $('#ticketContent').remove();
+                            });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Lỗi khi lấy dữ liệu vé:", error);
+                    }
+                });
+            });
+        });
+    </script>
+}
+

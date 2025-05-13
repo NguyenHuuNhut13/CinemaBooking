@@ -1,0 +1,26 @@
+﻿@model CinemaBooking.Areas.Admin.ViewModels.SeatViewModel
+@{
+    ViewData["Title"] = "Edit Seat";
+}
+
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="SeatId" />
+    <div class="form-group">
+        <label asp-for="AuditoriumId"></label>
+        <select asp-for="AuditoriumId" class="form-control" asp-items="Model.Auditoriums"></select>
+        <span asp-validation-for="AuditoriumId" class="text-danger"></span> <!-- Optional: Add validation feedback -->
+    </div>
+    <div class="form-group">
+        <label asp-for="Row"></label>
+        <input asp-for="Row" class="form-control" />
+        <span asp-validation-for="Row" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Number"></label>
+        <input asp-for="Number" class="form-control" />
+        <span asp-validation-for="Number" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

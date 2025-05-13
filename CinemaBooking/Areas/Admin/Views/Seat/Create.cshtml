@@ -1,0 +1,58 @@
+﻿@model CinemaBooking.Areas.Admin.ViewModels.SeatViewModel
+
+@{
+    ViewData["Title"] = "Create Seat";
+}
+
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="cinemaSelect">Chọn Rạp Chiếu</label>
+        <select id="cinemaSelect" name="cinemaId" class="form-select">
+            <option value="">Chọn Rạp Chiếu</option>
+            @foreach (var cinema in ViewBag.Cinemas)
+            {
+                <option value="@cinema.Value">@cinema.Text</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="AuditoriumId"></label>
+        <select asp-for="AuditoriumId" id="auditoriumSelect" class="form-control"></select>
+        <span asp-validation-for="AuditoriumId" class="text-danger"></span> <!-- Optional: Add validation feedback -->
+    </div>
+    <div class="form-group">
+        <label asp-for="Row"></label>
+        <input asp-for="Row" class="form-control" />
+        <span asp-validation-for="Row" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Number"></label>
+        <input asp-for="Number" class="form-control" />
+        <span asp-validation-for="Number" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Tạo</button>
+    <a asp-action="Index" class="btn btn-secondary">Trở lại</a>
+</form>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Load auditoriums when a cinema is selected
+            $('#cinemaSelect').change(function () {
+                var cinemaId = $(this).val();
+
+                // Send an AJAX request to get auditoriums based on the selected cinema
+                $.get('@Url.Action("GetAuditoriums", "Seat")', { cinemaId: cinemaId }, function (data) {
+                    var auditoriumSelect = $('#auditoriumSelect');
+                    auditoriumSelect.empty(); // Clear previous options
+                    auditoriumSelect.append('<option value="">Chọn Phòng Chiếu</option>'); // Default option
+
+                    // Populate the auditoriums dropdown
+                    $.each(data, function (index, item) {
+                        auditoriumSelect.append('<option value="' + item.value + '">' + item.text + '</option>');
+                    });
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,126 @@
+﻿@model IEnumerable<CinemaBooking.Models.Movie>
+
+@{
+    ViewData["Title"] = "Movies";
+}
+
+<!-- Button to navigate to Create page -->
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bx bx-plus"></i> Tạo Mới Phim
+    </a>
+</p>
+
+<!-- Movie Table -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Director)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().ReleaseDate)
+            </th>
+            <th>
+                Poster
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => movie.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => movie.Genre)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => movie.Director)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(m => movie.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => movie.Rating)
+                </td>
+                <td>
+                    @(movie.ReleaseDate.HasValue ? movie.ReleaseDate.Value.ToString("dd/MM/yyyy") : "N/A")
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(movie.Poster))
+                    {
+                        <img src="@Url.Content("~/uploads/" + movie.Poster)" alt="@movie.Title Poster" style="width:100px;height:auto;" />
+                    }
+                    else
+                    {
+                        <span>N/A</span>
+                    }
+                </td>
+                <td>
+
+                    <!-- Edit Button -->
+                    <a asp-action="Edit" asp-route-id="@movie.MovieId" class="btn btn-sm btn-warning">
+                        <i class="bx bx-edit"></i>
+                    </a>
+
+                    <!-- Delete Button (Triggers Modal) -->
+                    <a href="#"
+                       class="delete-movie btn btn-sm btn-danger"
+                       data-bs-toggle="modal"
+                       data-bs-target="#deleteModal"
+                       data-movie-id="@movie.MovieId">
+                        <i class="bx bx-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Bootstrap Modal for Delete Confirmation -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Xác Nhận Xóa</h5>
+                <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa phim này không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <form id="deleteForm" method="post" asp-action="Delete">
+                    <input type="hidden" name="id" />
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.delete-movie').click(function () {
+                var movieId = $(this).data('movie-id');
+                $('#deleteForm input[name="id"]').val(movieId); // Set the ID in the form
+            });
+        });
+    </script>
+}

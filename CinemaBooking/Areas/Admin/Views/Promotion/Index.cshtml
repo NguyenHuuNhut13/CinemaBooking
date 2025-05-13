@@ -1,0 +1,72 @@
+﻿@model IEnumerable<CinemaBooking.Models.Promotion>
+
+@{
+    ViewData["Title"] = "Khuyến Mại";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Tạo Khuyến Mại Mới</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã</th>
+            <th>Giảm Giá</th>
+            <th>Ngày Bắt Đầu</th>
+            <th>Ngày Kết Thúc</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var promotion in Model)
+        {
+            <tr>
+                <td>@promotion.Code</td>
+                <td>@promotion.Discount</td>
+                <td>@promotion.StartDate?.ToShortDateString()</td>
+                <td>@promotion.EndDate?.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@promotion.PromotionId" class="btn btn-warning"><i class="bx bx-edit"></i></a>
+                    <button class="btn btn-danger delete-promotion" data-bs-toggle="modal" data-bs-target="#deleteModal" data-promotion-id="@promotion.PromotionId" data-promotion-code="@promotion.Code"><i class="bx bx-trash"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal Xác Nhận Xóa -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Xác Nhận Xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa khuyến mại <strong id="promotionCode"></strong> không?</p>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="post" asp-action="Delete">
+                    <input type="hidden" name="id" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // jQuery cho việc xử lý modal
+         $(document).ready(function () {
+            $('.delete-promotion').click(function () {
+                var promotionId = $(this).data('promotion-id');
+                console.log(promotionId);
+                $('#deleteForm input[name="id"]').val(promotionId); // Set the ID in the form
+            });
+        });
+    </script>
+}

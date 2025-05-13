@@ -1,0 +1,27 @@
+﻿@model IEnumerable<CinemaBooking.Models.Movie>
+
+<!-- Movie List -->
+<div class="mt-4">
+    <h1 class="text-center mb-4">Danh Sách Phim</h1>
+    <div class="row">
+        @foreach (var movie in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <a href="@Url.Action("Details", "Home", new { id = movie.MovieId })" class="text-decoration-none">
+                    <div class="card h-100 movie-card">
+                        <!-- Movie Poster Image -->
+                        <img src="@Url.Content("~/uploads/" + movie.Poster)" class="card-img-top movie-img" alt="Poster của @movie.Title" />
+                        <div class="card-body text-center">
+                            <!-- Movie Title -->
+                            <h5 class="card-title">@movie.Title</h5>
+                            <!-- Movie Description (optional) -->
+                            <p class="card-text">@movie.Description</p>
+                            <!-- "View Details" Button -->
+                            <a href="@Url.Action("Details", "Home", new { id = movie.MovieId })" class="btn btn-primary">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

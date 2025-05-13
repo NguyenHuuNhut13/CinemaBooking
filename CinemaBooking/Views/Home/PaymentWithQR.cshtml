@@ -1,0 +1,43 @@
+﻿@model CinemaBooking.ViewModels.PaymentWithQRViewModel
+
+@{
+    ViewData["Title"] = "Thanh Toán Với Mã QR"; // Payment with QR
+}
+
+<div class="mt-4">
+    <h1>Thanh Toán Với Mã QR</h1>
+
+    <!-- Display Error or Success Message -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <!-- Payment Form -->
+    <form asp-action="PaymentWithQR" method="post">
+        <div class="form-group mt-3">
+            <label for="Amount">Số Tiền (VNĐ)</label> <!-- Amount -->
+            <input type="number" id="Amount" name="Amount" class="form-control" value="@Model.Amount" required min="1" />
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Tạo Mã QR</button>
+    </form>
+
+    <!-- Display QR Code using Google Chart API -->
+    @if (!string.IsNullOrWhiteSpace(Model.QRContent))
+    {
+        <div class="mt-5">
+            <h4>Mã QR Của Bạn</h4>
+            <!-- Using Google Chart API to generate QR Code -->
+            <img src="https://quickchart.io/qr?text=@Model.QRContent" alt="QR Code" />
+        </div> <!-- Close the div for QR Code display -->
+    }
+</div>

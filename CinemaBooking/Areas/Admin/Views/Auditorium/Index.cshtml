@@ -1,0 +1,102 @@
+﻿@model IEnumerable<CinemaBooking.Models.Auditorium>
+
+@{
+    ViewData["Title"] = "Phòng chiếu";
+}
+
+    <div class="d-flex justify-content-between align-items-center">
+        <p>
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bx bx-plus"></i> Tạo Mới Rạp
+            </a>
+        </p>
+    <form method="get" asp-action="Index">
+        <div class="d-flex justify-content-between align-items-center">
+            <select id="cinemaFilter" name="cinemaId" class="form-control me-2 select-length" asp-items="ViewBag.CinemaId">
+                <option value="">Tất cả</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Lọc</button>
+        </div>
+    </form>
+
+
+
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SeatCapacity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cinema)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SeatCapacity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cinema.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.AuditoriumId" class="btn btn-sm btn-warning">
+                            <i class="bx bx-edit"></i>
+                        </a>
+                        <a href="#"
+                           class="delete-auditorium btn btn-sm btn-danger"
+                           data-bs-toggle="modal"
+                           data-bs-target="#deleteModal"
+                           data-auditorium-id="@item.AuditoriumId">
+                            <i class="bx bx-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Bootstrap Modal for Delete Confirmation -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Xác Nhận Xóa</h5>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xóa rạp này không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <form id="deleteForm" method="post" asp-action="Delete">
+                        <input type="hidden" name="id" />
+                        <button type="submit" class="btn btn-danger">Xóa</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.delete-auditorium').click(function () {
+                var auditoriumId = $(this).data('auditorium-id');
+                $('#deleteForm input[name="id"]').val(auditoriumId); // Set the ID
+            });
+        });
+    </script>
+}

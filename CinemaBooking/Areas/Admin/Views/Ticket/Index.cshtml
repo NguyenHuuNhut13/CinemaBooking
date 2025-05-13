@@ -1,0 +1,85 @@
+﻿@model IEnumerable<CinemaBooking.Models.Ticket>
+
+@{
+    ViewData["Title"] = "Vé";
+}
+
+<div class="mt-4">
+    <h2>Danh sách Vé</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mã Vé</th>
+                <th>Thời gian chiếu</th>
+                <th>Chỗ ngồi</th>
+                <th>Giá</th>
+                <th>Thời gian đặt vé</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in Model)
+            {
+                <tr>
+                    <td>@ticket.TicketId</td>
+                    <td>@ticket.Showtime?.ShowTime1</td>
+                    <td>@ticket.Seat?.Number</td>
+                    <td>@ticket.Price</td>
+                    <td>@ticket.BookingTime</td>
+                    <td>
+                        <!-- Nút Thanh toán -->
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal"
+                                data-ticketid="@ticket.TicketId" data-price="@ticket.Price">
+                            Thanh toán
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Thanh toán -->
+<div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Thanh toán vé</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form method="post" asp-controller="Ticket" asp-action="ProcessPayment">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="ticketId">Mã vé</label>
+                        <input type="text" id="ticketId" name="ticketId" class="form-control" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Số tiền</label>
+                        <input type="number" id="amount" name="amount" class="form-control" step="0.01" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Xác nhận thanh toán</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Script để điền dữ liệu vào modal thanh toán
+        $('#paymentModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Nút kích hoạt modal
+            var ticketId = button.data('ticketid');
+            var price = button.data('price');
+
+            var modal = $(this);
+            modal.find('#ticketId').val(ticketId);
+            modal.find('#amount').val(price);
+        });
+    </script>
+
+}

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<CinemaBooking.Models.Showtime>
+
+@{
+    ViewData["Title"] = "Lịch Chiếu";
+}
+
+<p>
+    <a asp-area="Admin" asp-controller="Showtime" asp-action="Create" class="btn btn-primary">Tạo Lịch Chiếu Mới</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Phim</th>
+            <th>Rạp Chiếu</th>
+            <th>Ngày Chiếu</th>
+            <th>Giờ Chiếu</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var showtime in Model)
+        {
+            <tr>
+                <td>@showtime.Movie.Title</td>
+                <td>@showtime.Auditorium.Name</td>
+                <td>@showtime.ShowDate?.ToShortDateString()</td>
+                <td>@showtime.ShowTime1?.ToString(@"hh\:mm")</td>
+                <td>
+                    <a asp-area="Admin" asp-controller="Showtime" asp-action="Edit" asp-route-id="@showtime.ShowtimeId" class="btn btn-warning"><i class="bx bx-edit"></i></a>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@showtime.ShowtimeId" data-title="@showtime.Movie.Title"><i class="bx bx-trash"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Xác Nhận Xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa lịch chiếu cho <strong id="movieTitle"></strong> không?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="post">
+                    <input type="hidden" name="id" id="showtimeId" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Nút kích hoạt modal
+            var id = button.data('id'); // Lấy thông tin từ các thuộc tính data-*
+            var title = button.data('title'); // Lấy tên phim
+
+            // Cập nhật nội dung của modal.
+            var modal = $(this);
+            modal.find('#movieTitle').text(title);
+            modal.find('#showtimeId').val(id);
+            modal.find('#deleteForm').attr('action', '@Url.Action("DeleteConfirmed", "Showtime", new { area = "Admin" })');
+        });
+    </script>
+}

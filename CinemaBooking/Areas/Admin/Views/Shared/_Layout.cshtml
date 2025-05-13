@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CinemaBooking</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx bxl-c-plus-plus'></i>
+            <span class="logo_name">Cinema</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Home" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
+                    <i class='bx bx-grid-alt'></i>
+                    <span class="links_name">Tổng quan</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="Cinema" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Cinema" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
+                    <i class='bx bx-box'></i>
+                    <span class="links_name">Rạp chiếu phim</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="Auditorium" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Auditorium" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
+                    <i class='bx bx-list-ul'></i>
+                    <span class="links_name">Phòng chiếu</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="Movie" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Movie" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
+                    <i class='bx bxs-film'></i> 
+                    <span class="links_name">Phim</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="Seat" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Seat" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
+                    <i class='bx bx-chair'></i>
+                    <span class="links_name">Chỗ ngồi</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="Promotion" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Promotion" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
+                    <i class='bx bxs-gift'></i>
+                    <span class="links_name">Khuyến mãi</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="Showtime" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Showtime" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
+                    <i class='bx bx-time-five'></i>
+                    <span class="links_name">Thời gian chiếu</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="User" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "User" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
+                    <i class='bx bx-user'></i> 
+                    <span class="links_name">Người dùng</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="Ticket" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"].ToString() == "Ticket" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
+                    <i class='bx bx-user'></i>
+                    <span class="links_name">Vé</span>
+                </a>
+            </li>
+            <li class="log_out">
+                <a asp-controller="Admin" asp-action="Logout">
+                    <i class='bx bx-log-out'></i>
+                    <span class="links_name">Đăng xuất</span>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+    <section class="home-section">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="sidebar-button">
+                <i class='bx bx-menu sidebarBtn'></i>
+                <span class="dashboard">@ViewData["Title"]</span>
+            </div>
+            <div class="profile-details">
+                <img src="images/profile.jpg" class="rounded-circle" alt="" style="width: 40px; height: 40px;">
+                <span class="admin_name">Quản trị viên</span>
+                <i class='bx bx-chevron-down'></i>
+            </div>
+        </nav>
+        <main role="main" class="home-content px-3">
+            @RenderBody()
+        </main>
+    </section>
+
+    <footer class="border-top footer text-muted">
+        <div class="container text-center">
+            &copy; 2024 - CinemaBooking - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script>
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".sidebarBtn");
+        sidebarBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+            sidebarBtn.classList.toggle("bx-menu-alt-right");
+        }
+    </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

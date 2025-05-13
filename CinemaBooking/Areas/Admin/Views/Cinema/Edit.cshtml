@@ -1,0 +1,44 @@
+﻿@model CinemaBooking.Areas.Admin.ViewModels.CinemaViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Rạp Chiếu Phim"; // Updated title in Vietnamese
+}
+            <!-- Adjusted column size for better layout -->
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <!-- Cinema Name -->
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Nhập tên rạp" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <!-- Location -->
+                <div class="form-group">
+                    <label asp-for="Location" class="control-label"></label>
+                    <input asp-for="Location" class="form-control" placeholder="Nhập địa chỉ" />
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <!-- City -->
+                <div class="form-group">
+                    <label asp-for="City" class="control-label"></label>
+                    <input asp-for="City" class="form-control" placeholder="Nhập thành phố" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group mt-3">
+                    <input type="submit" value="Lưu" class="btn btn-primary btn-block" /> <!-- Full-width button -->
+                    <a asp-action="Index" class="btn btn-secondary btn-block">Quay lại danh sách</a> <!-- Full-width button -->
+                </div>
+            </form>
+

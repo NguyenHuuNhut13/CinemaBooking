@@ -1,0 +1,144 @@
+﻿/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.info_section {
+    background-color: #0a0a0a;
+    color: #fff;
+    padding: 50px 0;
+    font-size: 14px;
+}
+
+    .info_section a {
+        color: #fff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .info_section a:hover {
+            color: #00bcd4;
+        }
+
+/* Info Top Section */
+.info_top {
+    margin-bottom: 30px;
+}
+
+.navbar-brand {
+    font-size: 30px;
+    font-weight: bold;
+    color: #00bcd4;
+    text-transform: uppercase;
+}
+
+.info_contact a {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #ccc;
+}
+
+    .info_contact a i {
+        font-size: 18px;
+        margin-right: 10px;
+    }
+
+.social_box a {
+    margin-right: 15px;
+    font-size: 18px;
+    color: #ccc;
+    transition: color 0.3s;
+}
+
+    .social_box a:hover {
+        color: #00bcd4;
+    }
+
+/* Info Bottom Section */
+.info_bottom {
+    border-top: 1px solid #444;
+    padding-top: 30px;
+}
+
+.info_detail h5 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    color: #00bcd4;
+}
+
+.info_detail p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #ccc;
+}
+
+.info_form input {
+    width: calc(100% - 100px);
+    padding: 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.info_form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #00bcd4;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .info_form button:hover {
+        background-color: #008c9e;
+    }
+
+.info_menu {
+    list-style: none;
+    padding: 0;
+}
+
+    .info_menu li {
+        margin-bottom: 10px;
+    }
+
+        .info_menu li a {
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+            .info_menu li a:hover {
+                color: #00bcd4;
+            }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .info_top .row,
+    .info_bottom .row {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .info_contact,
+    .social_box,
+    .info_form {
+        margin-bottom: 20px;
+    }
+
+        .info_form input {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .info_form button {
+            width: 100%;
+        }
+}

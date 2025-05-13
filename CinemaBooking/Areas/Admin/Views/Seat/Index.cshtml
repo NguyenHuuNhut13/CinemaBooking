@@ -1,0 +1,164 @@
+﻿@model IEnumerable<CinemaBooking.Models.Seat>
+
+@{
+    ViewData["Title"] = "Danh Sách Ghế";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Tạo Ghế Mới</a>
+</p>
+
+<form method="get" asp-action="Index">
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="cinemaSelect">Chọn Rạp Chiếu</label>
+            <select id="cinemaSelect" name="cinemaId" class="form-select">
+                <option value="">Tất cả rạp chiếu</option>
+                
+                @* Declare the selected cinema id from ViewData outside of the loop *@
+                @{
+                    var selectedCinemaId = ViewData["SelectedCinemaId"] as int?;
+                }
+
+                @foreach (var cinema in ViewBag.Cinemas)
+                {
+                    bool isSelected = selectedCinemaId != null && selectedCinemaId.Value == int.Parse(cinema.Value) ? true : false;
+                    if (isSelected)
+                    {
+                        <option value="@cinema.Value" selected>
+                            @cinema.Text
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@cinema.Value">
+                            @cinema.Text
+                        </option>
+                    }
+
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="auditoriumSelect">Chọn Phòng Chiếu</label>
+            <select id="auditoriumSelect" name="auditoriumId" class="form-select">
+                <option value="">Tất cả phòng chiếu</option>
+
+                @* Declare the selected auditorium id from ViewData outside of the loop *@
+                @{
+                    var selectedAuditoriumId = ViewData["SelectedAuditoriumId"] as int?;
+                }
+
+                @if (ViewBag.Auditoriums != null)
+                {
+                    foreach (var auditorium in ViewBag.Auditoriums)
+                    {
+                        bool isSelected = selectedAuditoriumId != null && selectedAuditoriumId.Value == int.Parse(auditorium.Value) ? true : false;
+                        if(isSelected)
+                        {
+                            <option value="@auditorium.Value" selected>
+                                @auditorium.Text
+                            </option>
+                        }
+                        else
+                        {
+                            <option value="@auditorium.Value">
+                                @auditorium.Text
+                            </option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-4 align-self-end">
+            <button type="submit" class="btn btn-primary">Lọc</button>
+        </div>
+    </div>
+</form>
+
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Hàng</th>
+            <th>Số</th>
+            <th>Phòng Chiếu</th>
+            <th>Rạp Chiếu</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var seat in Model)
+        {
+            <tr>
+                <td>@seat.Row</td>
+                <td>@seat.Number</td>
+                <td>@seat.Auditorium?.Name</td>
+                <td>@seat.Auditorium?.Cinema?.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@seat.SeatId" class="btn btn-warning">
+                        <i class="bx bx-edit"></i>
+                    </a>
+                    <button class="btn btn-danger delete-seat" data-bs-toggle="modal" data-bs-target="#deleteModal" data-seat-id="@seat.SeatId">
+                        <i class="bx bx-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Mô Đun Xóa -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Xóa Ghế</h5>
+                <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa ghế này không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <form id="deleteForm" method="post" asp-action="Delete">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" id="seatId" />
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Triggered when the cinema selection changes
+            $('#cinemaSelect').change(function () {
+                var cinemaId = $(this).val();
+
+                // Send an Ajax GET request to fetch the auditoriums
+                $.get('@Url.Action("GetAuditoriums", "Seat", new { area = "Admin" })', { cinemaId: cinemaId }, function (data) {
+                    var auditoriumSelect = $('#auditoriumSelect');
+                    auditoriumSelect.empty(); // Clear current options
+                    auditoriumSelect.append('<option value="">Tất cả phòng chiếu</option>'); // Default option
+
+                    // Populate the dropdown with the returned auditoriums
+                    $.each(data, function (index, item) {
+                        auditoriumSelect.append('<option value="' + item.value + '">' + item.text + '</option>');
+                    });
+                });
+
+            });
+
+            // Trigger when a seat delete button is clicked to show the delete modal
+            $('.delete-seat').click(function () {
+                var seatId = $(this).data('seat-id');
+                $('#seatId').val(seatId); // Set the seat ID in the hidden field
+            });
+        });
+    </script>
+}

@@ -1,0 +1,94 @@
+/* Base font size */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* Focus states for buttons, form controls, and links */
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* Body styling */
+body {
+    background-color: #f3f4f6;
+    font-family: Arial, sans-serif;
+    margin-bottom: 60px; /* Add space at the bottom for footer */
+   
+}
+
+/* Header styling */
+header {
+    background-color: #343a40; /* Dark background for header */
+    padding: 1rem;
+}
+
+.navbar {
+    padding: 0.8rem; /* Reduce padding inside navbar */
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+    color: #ffffff !important; /* White text for links and brand */
+    font-weight: bold;
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #adb5bd !important; /* Change color on hover */
+}
+
+.navbar-nav .nav-link i {
+    margin-right: 5px; /* Space between icon and text */
+}
+
+
+/* Style the movie card container */
+.movie-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Card image style */
+.movie-img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    border-bottom: 1px solid #ddd;
+}
+
+/* Hover effect for the card */
+.movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Centering the movie title */
+.card-body {
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+}
+
+/* Style for the movie list title */
+h1.text-center {
+    font-size: 2rem;
+    color: #007bff;
+    font-weight: 600;
+}
